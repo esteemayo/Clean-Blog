@@ -1,0 +1,40 @@
+<% include partials/header %>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('<%= posts.image %>')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1><%= posts.title %></h1>
+            <span class="meta">Posted by
+              <a href="#"><%= posts.author.username %></a>
+              <%= posts.createdAt.toDateString() %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <%= posts.content %>
+        </div>
+      </div>
+      <div class="custom-btn">
+        <% if (user && posts.author.id.equals(user._id)) { %>
+          <a class="btn btn-primary" href="/posts/<%= posts._id %>/edit">Edit &rarr;</a>
+          <form id="btn-del" action="/posts/<%= posts._id %>?_method=DELETE" method="post">
+            <button class="btn btn-danger">Delete &rarr;</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </article>
+
+
+<% include partials/footer %>

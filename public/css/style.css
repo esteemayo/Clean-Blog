@@ -1,0 +1,35 @@
+.custom-btn {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#btn-del {
+    display: inline;
+}
+
+.custom-href {
+    font-size: 16px;
+    color: #888888
+}
+
+.custom-href a:hover {
+    text-decoration: none;
+}
+
+.custom-ul {
+    list-style-type: none;
+}
+
+.custom-ul a:hover {
+    text-decoration: none;
+}
+
+.custom-link {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.custom-link:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
