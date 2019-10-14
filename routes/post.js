@@ -5,7 +5,7 @@ const { ensureAuthenticated, checkPostOwnership } = require('../helpers/auth');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: function (req, file, callback) {
+    filename: function (req, file, callback) {
         return callback(null, Date.now() + file.originalname);
     }
 });
@@ -22,7 +22,7 @@ const upload = multer({ storage: storage, fileFilter: imageFilter });
 
 const cloudinary = require('cloudinary');
 cloudinary.config({
-    cloud_name: 'learnhowtocode',
+    cloud_name: 'learntocodewithnode',
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
@@ -45,7 +45,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 router.get('/more', ensureAuthenticated, async (req, res) => {
     try {
         const posts = await Post.find({})
-            .sort('-createdAt')
+            .sort('-createdAt');
         res.render('posts/more', { posts });
     } catch (ex) {
         console.log(ex);
@@ -65,7 +65,7 @@ router.post('/store', ensureAuthenticated, upload.single('image'), (req, res) =>
         let description = req.body.description;
         let content = req.body.content;
         let image = result.secure_url;
-        let imageId = result.public_url;
+        let imageId = result.public_id;
         let author = {
             id: req.user._id,
             username: req.user.username
@@ -91,6 +91,7 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
         res.render('posts/show', { post })
     } catch (err) {
         console.log(ex);
+        res.redirect('/posts');
     }
 });
 
@@ -101,7 +102,7 @@ router.get('/:id/edit', checkPostOwnership, ensureAuthenticated, async (req, res
         res.render('posts/edit', { post });
     } catch (ex) {
         console.log(ex);
-        res.redirect('/posts');
+        res.redirect(`/posts/${post._id}`);
     }
 });
 
@@ -114,9 +115,9 @@ router.put('/:id', upload.single('image'), (req, res) => {
         } else {
             if (req.file) {
                 try {
-                    await cloudinary.uploader.destroy(post.imageId);
+                    await cloudinary.v2.uploader.destroy(post.imageId);
                     let result = await cloudinary.v2.uploader.upload(req.file.path);
-                    post.imageId = result.public_url;
+                    post.imageId = result.public_id;
                     post.image = result.secure_url;
                 } catch (err) {
                     req.flash('error', err.message);
@@ -133,18 +134,18 @@ router.put('/:id', upload.single('image'), (req, res) => {
     });
 });
 
-router.delete('/:id', checkPostOwnership, ensureAuthenticated, (req, res) => {
-    Post.findById(req.params.id, async (err, post) => {
-        try {
-            await cloudinary.uploader.destroy(post.imageId);
-            post.remove();
-            req.flash('success', 'Post Deleted Successfully!');
-            res.redirect('/posts');
-        } catch (err) {
-            req.flash('error', err.message);
-            return res.redirect('back');
-        }
-    });
+// DELETE BLOG POST ROUTE
+router.delete('/:id', checkPostOwnership, ensureAuthenticated, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        await cloudinary.uploader.destroy(post.imageId);
+        post.remove();
+        req.flash('success', 'Post Deleted Successfully!');
+        res.redirect('/posts');
+    } catch (ex) {
+        req.flash('error', ex.message);
+        return res.redirect('back');
+    }
 });
 
 

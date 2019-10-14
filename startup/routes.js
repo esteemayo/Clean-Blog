@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const passport = require('passport');
 const methodeOverride = require('method-override');
+const cookieparser = require('cookie-parser');
 const path = require('path');
 
 
@@ -21,6 +22,7 @@ module.exports = app => {
     app.set('view engine', 'ejs');
     app.use(express.static(path.join(__dirname, '../public')));
     app.use(methodeOverride('_method'));
+    app.use(cookieparser());
     app.use(flash());
 
     // PASSPORT CONFIGURATION
