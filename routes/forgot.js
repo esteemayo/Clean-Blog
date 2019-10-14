@@ -37,16 +37,16 @@ router.post('/', (req, res, next) => {
 
         function (token, user, done) {
             let smtpTransporter = nodemailer.createTransport({
-                service: 'Gmail',
+                service: process.env.MAIL_SERVICE,
                 auth: {
-                    user: 'esteemdesign19@gmail.com',
-                    pass: 'princeadebayo'
+                    user: process.env.CLIENT_MAIL,
+                    pass: process.env.CLIENT_PASSWORD
                 }
             });
 
             let mailOptions = {
                 to: user.email,
-                from: 'esteemdesign19@gmail.com',
+                from: process.env.CLIENT_MAIL,
                 subject: 'Esteem Blog Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
