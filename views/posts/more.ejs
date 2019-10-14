@@ -1,0 +1,47 @@
+<% include ../partials/header %>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/more-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Esteem Blog</h1>
+          <span class="subheading">A Blog Theme by Esteem Designs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <% posts.forEach(post => { %>
+      <div class="post-preview">
+        <a href="/posts/<%= post._id %>">
+          <h2 class="post-title">
+            <%= post.title %>
+          </h2>
+          <h3 class="post-subtitle">
+            <%= post.content.substring(100, 0) %>...
+          </h3>
+          <h6 class="post-subtitle">
+            <span><em><%= post.description %></em></span>
+          </h6>
+        </a>
+        <p class="post-meta">
+          Posted by
+          <a href="/users/<%= user._id %>"><%= post.author.username %></a>
+          <%= post.createdAt.toDateString() %>
+        </p>
+      </div>
+      <hr />
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

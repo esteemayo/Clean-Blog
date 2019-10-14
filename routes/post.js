@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const nodemailer = require('nodemailer');
+const Post = require('../models/Post');
+const { ensureAuthenticated, checkPostOwnership } = require('../helpers/auth');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -26,73 +27,39 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const Post = require('../models/post');
-const { ensureAuthenticated, checkPostOwnership } = require('../helpers/auth');
+
 
 // INDEX ROUTE
-// router.get('/', ensureAuthenticated, (req, res) => {
-//     Post.find({}).sort({createdAt: 'desc'}).exec((err, posts) => {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.render('index', {posts: posts});
-//         }
-//     });
-// });
-
 router.get('/', ensureAuthenticated, async (req, res) => {
     try {
-        let posts = await Post.find({}).sort({ createdAt: 'desc' }).exec();
-        res.render('index', { posts });
-    } catch (err) {
-        console.log(err);
+        const posts = await Post.find({})
+            .sort('-createdAt')
+            .limit(5)
+        res.render('posts/index', { posts });
+    } catch (ex) {
+        console.log(ex);
     }
 });
 
-// ABOUT ROUTE
-router.get('/about', (req, res) => {
-    res.render('about');
-});
-
-// CONTACT ROUTE
-router.get('/contact', (req, res) => {
-    res.render('contact');
-});
-
-// CONTACT-PAGE POST LOGIC WITH NODEMAILER
-router.post('/contact', (req, res) => {
-    let smtpTransporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'esteemdesign19@gmail.com',
-            pass: 'princeadebayo'
-        }
-    });
-
-    let mailOptions = {
-        from: req.body.name + '&lt;' + req.body.telephone + '&gt;',
-        to: 'esteemdesign19@gmail.com',
-        subject: `${req.body.email} says: ${req.body.message}`
+// MORE-POST GET ROUTE
+router.get('/more', ensureAuthenticated, async (req, res) => {
+    try {
+        const posts = await Post.find({})
+            .sort('-createdAt')
+        res.render('posts/more', { posts });
+    } catch (ex) {
+        console.log(ex);
+        res.redirect('/posts');
     }
-
-    smtpTransporter.sendMail(mailOptions, (err, data) => {
-        if (err) {
-            req.flash('error', err.message);
-            res.redirect('/contact');
-        } else {
-            req.flash('success', 'Message successfully sent');
-            res.redirect('/');
-        }
-    });
 });
 
 // NEW POST ROUTE
-router.get('/posts/new', ensureAuthenticated, (req, res) => {
-    res.render('create');
+router.get('/new', ensureAuthenticated, (req, res) => {
+    res.render('posts/create');
 });
 
 // CREATE NEW POST ROUTE
-router.post('/posts/store', ensureAuthenticated, upload.single('image'), (req, res) => {
+router.post('/store', ensureAuthenticated, upload.single('image'), (req, res) => {
     cloudinary.uploader.upload(req.file.path, (result) => {
         let title = req.body.title;
         let description = req.body.description;
@@ -111,50 +78,35 @@ router.post('/posts/store', ensureAuthenticated, upload.single('image'), (req, r
                 console.log(err);
             } else {
                 req.flash('success', 'Post created!');
-                res.redirect('/');
+                res.redirect('/posts');
             }
         });
     });
 });
 
-// router.post('/posts/store', (req, res) => {
-//     const {image} = req.files;
-
-//     image.mv(path.resolve(__dirname, 'public/posts', image.name), err => {
-//         Post.create({
-//             ...req.body,
-//             image: `/posts/${image.name}`
-//         }, (err, post) => {
-//             res.redirect('/');
-//         });
-//     });
-// });
-
 // SHOW POST ROUTE
-router.get('/posts/:id', ensureAuthenticated, (req, res) => {
-    Post.findById(req.params.id, (err, foundPost) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render('post', { posts: foundPost });
-        }
-    });
+router.get('/:id', ensureAuthenticated, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        res.render('posts/show', { post })
+    } catch (err) {
+        console.log(ex);
+    }
 });
 
 // EDIT POST ROUTE
-router.get('/posts/:id/edit', checkPostOwnership, ensureAuthenticated, (req, res) => {
-    Post.findById(req.params.id, (err, foundPost) => {
-        if (err) {
-            console.log(err);
-            res.redirect('/');
-        } else {
-            res.render('edit', { post: foundPost });
-        }
-    });
+router.get('/:id/edit', checkPostOwnership, ensureAuthenticated, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        res.render('posts/edit', { post });
+    } catch (ex) {
+        console.log(ex);
+        res.redirect('/posts');
+    }
 });
 
 // UPDATE BLOG POST ROUTE
-router.put('/posts/:id', upload.single('image'), (req, res) => {
+router.put('/:id', upload.single('image'), (req, res) => {
     Post.findById(req.params.id, async (err, post) => {
         if (err) {
             req.flash('error', err.message);
@@ -176,18 +128,18 @@ router.put('/posts/:id', upload.single('image'), (req, res) => {
             post.content = req.body.content;
             post.save();
             req.flash('success', 'Post Successfully Updated!');
-            res.redirect('/');
+            res.redirect('/posts');
         }
     });
 });
 
-router.delete('/posts/:id', checkPostOwnership, ensureAuthenticated, (req, res) => {
+router.delete('/:id', checkPostOwnership, ensureAuthenticated, (req, res) => {
     Post.findById(req.params.id, async (err, post) => {
         try {
             await cloudinary.uploader.destroy(post.imageId);
             post.remove();
             req.flash('success', 'Post Deleted Successfully!');
-            res.redirect('/');
+            res.redirect('/posts');
         } catch (err) {
             req.flash('error', err.message);
             return res.redirect('back');
