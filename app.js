@@ -13,6 +13,6 @@ require('./config/passport')(passport);
 
 
 
-const port = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4001;
 
-app.listen(port, () => console.log(`APP LISTENING ON PORT ${port}`));
+app.listen(PORT, () => console.log(`APP LISTENING ON PORT ${PORT}`));
