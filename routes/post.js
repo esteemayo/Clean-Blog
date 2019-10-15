@@ -33,7 +33,7 @@ cloudinary.config({
 router.get('/', ensureAuthenticated, async (req, res) => {
     try {
         const posts = await Post.find({})
-            .sort('-createdAt')
+            .sort({ createdAt: 'desc' })
             .limit(5)
         res.render('posts/index', { posts });
     } catch (ex) {
@@ -45,7 +45,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 router.get('/more', ensureAuthenticated, async (req, res) => {
     try {
         const posts = await Post.find({})
-            .sort('-createdAt');
+            .sort({ createdAt: 'asc' });
         res.render('posts/more', { posts });
     } catch (ex) {
         console.log(ex);
