@@ -7,6 +7,8 @@ const cookieparser = require('cookie-parser');
 const path = require('path');
 
 
+const AppError = require('../utils/appError');
+const globalErrorHandler = require('../controller/errorController');
 const viewRoute = require('../routes/view');
 const post = require('../routes/post');
 const users = require('../routes/users');
@@ -42,8 +44,14 @@ module.exports = app => {
         next();
     });
 
+    // Test middleware
+    app.use((req, res, next) => {
+        req.requestTime = new Date().toISOString();
+        next();
+    });
+
     app.use('/', viewRoute);
-    app.use('/posts', post);
+    // app.use('/posts', post);
     app.use('/users/register', users);
     app.use('/auth/login', auth);
     app.use('/auth/logout', logout);
@@ -52,4 +60,10 @@ module.exports = app => {
     app.use('/contact', contact);
     app.use('/forgot', forgot);
     app.use('/reset', reset);
-}
+
+    app.all('*', (req, res, next) => {
+        return next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+    });
+
+    app.use(globalErrorHandler);
+};

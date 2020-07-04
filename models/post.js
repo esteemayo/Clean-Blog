@@ -3,22 +3,18 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: [true, 'A post must have a title']
     },
     description: {
         type: String,
-        required: true
+        required: [true, 'A post must have a description']
     },
     content: {
         type: String,
-        required: true
+        required: [true, 'A post must have a content']
     },
-    image: {
-        type: String,
-    },
-    imageId: {
-        type: String
-    },
+    image: String,
+    imageId: String,
     createdAt: {
         type: Date,
         default: new Date
@@ -32,4 +28,6 @@ const postSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postSchema);
+
+module.exports = Post;
