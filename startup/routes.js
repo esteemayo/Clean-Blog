@@ -7,6 +7,7 @@ const cookieparser = require('cookie-parser');
 const path = require('path');
 
 
+const viewRoute = require('../routes/view');
 const post = require('../routes/post');
 const users = require('../routes/users');
 const auth = require('../routes/auth');
@@ -41,6 +42,7 @@ module.exports = app => {
         next();
     });
 
+    app.use('/', viewRoute);
     app.use('/posts', post);
     app.use('/users/register', users);
     app.use('/auth/login', auth);
