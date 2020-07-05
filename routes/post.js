@@ -1,8 +1,9 @@
 const express = require('express');
-const router = express.Router();
+const multer = require('multer');
 const Post = require('../models/Post');
 const { ensureAuthenticated, checkPostOwnership } = require('../helpers/auth');
-const multer = require('multer');
+
+const router = express.Router();
 
 const storage = multer.diskStorage({
     filename: function (req, file, callback) {

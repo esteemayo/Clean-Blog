@@ -1,75 +1,26 @@
 const express = require('express');
+const authControlller = require('../controller/authController');
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
 
-// REGISTER ROUTE
-router.get('/', (req, res) => {
-    res.render('users/register');
-});
+router.get('/users/register', authControlller.registerForm);
 
-// HANDLING REGISTER
-router.post('/', (req, res) => {
-    const { username, email, password } = req.body;
-    let errors = [];
+router.post('/users/register', authControlller.register);
 
-    if (!username || !email || !password) {
-        errors.push({ text: 'Please all required fields must be filled out' });
-    }
+router.get('/auth/login', authControlller.loginForm);
 
-    if (password.length < 6) {
-        errors.push({ text: 'Password should be at least 6 characters' });
-    }
+router.post('/auth/login', authControlller.login);
 
-    if (errors.length > 0) {
-        res.render('users/register', {
-            errors,
-            username,
-            email,
-            password
-        });
-    } else {
-        User.findOne({ email: email })
-            .then(user => {
-                if (user) {
-                    errors.push({ text: 'Email already registered' });
-                    res.render('users/register', {
-                        errors,
-                        username,
-                        email,
-                        password
-                    });
-                } else {
-                    const newUser = new User({
-                        username,
-                        email,
-                        password
-                    })
+router.get('/auth/logout', authControlller.logout);
 
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.password, salt, (err, hash) => {
-                            if (err) throw err;
+router.get('/auth/forgot', authControlller.forgotForm);
 
-                            newUser.password = hash;
-                            newUser.save()
-                                .then(user => {
-                                    req.flash('success', 'You\'re now registered and can log in');
-                                    res.redirect('/auth/login');
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    return;
-                                });
-                        });
-                    });
-                }
-            })
-    }
-});
+router.post('/auth/forgot', authControlller.forgot);
 
+router.get('/auth/reset/:token', authControlller.resetPasswordForm);
 
+router.post('/auth/reset/:token', authControlller.resetPassword);
 
-
-
+router.post('/api/v1/users', authControlller.apiLogin);
 
 module.exports = router;

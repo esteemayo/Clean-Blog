@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('<%= post.image %>')">
+<header class="masthead" style="background-image: url('<%= post.image %>');">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
@@ -10,7 +10,7 @@
           <h1><%= post.title %></h1>
           <span class="meta"
             >Posted by
-            <a href="#"><%= post.author.username %></a>
+            <a href="#"></a>
             <%= post.createdAt.toDateString() %></span
           >
         </div>
@@ -29,12 +29,12 @@
     </div>
     <div class="custom-btn">
       <% if (user && post.author.id.equals(user._id)) { %>
-      <a class="btn btn-primary" href="/posts/<%= post._id %>/edit"
+      <a class="btn btn-primary" href="/posts/<%= post.slug %>/edit"
         >Edit &rarr;</a
       >
       <form
         id="btn-del"
-        action="/posts/<%= post._id %>?_method=DELETE"
+        action="/posts/<%= post.slug %>?_method=DELETE"
         method="post"
       >
         <button class="btn btn-danger">Delete &rarr;</button>

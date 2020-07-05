@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const flash = require('connect-flash');
 const passport = require('passport');
 const methodeOverride = require('method-override');
@@ -10,25 +11,32 @@ const path = require('path');
 const AppError = require('../utils/appError');
 const globalErrorHandler = require('../controller/errorController');
 const viewRoute = require('../routes/view');
-const post = require('../routes/post');
-const users = require('../routes/users');
-const auth = require('../routes/auth');
+const userRoute = require('../routes/users');
 const index = require('../routes/index');
-const logout = require('../routes/logout');
-const about = require('../routes/about');
-const contact = require('../routes/contact');
-const forgot = require('../routes/forgot');
-const reset = require('../routes/reset');
+const contactRoute = require('../routes/contact');
 
 module.exports = app => {
-    app.use(bodyParser.urlencoded({ extended: true }));
     app.set('view engine', 'ejs');
+
+    // Body parser middleware
+    app.use(bodyParser.json({ limit: '10kb' }));
+    app.use(bodyParser.urlencoded({ extended: true, limit: '10kb' }));
+
+    // Cookie parser middleware
+    app.use(cookieparser());
+
+    // Development logging
+    if (process.env.NODE_ENV === 'development') {
+        app.use(morgan('dev'));
+    }
+
     app.use(express.static(path.join(__dirname, '../public')));
     app.use(methodeOverride('_method'));
-    app.use(cookieparser());
+
+    // Connect flash middleware
     app.use(flash());
 
-    // PASSPORT CONFIGURATION
+    // Passport configuration
     app.use(require('express-session')({
         secret: 'secret',
         resave: false,
@@ -51,15 +59,9 @@ module.exports = app => {
     });
 
     app.use('/', viewRoute);
-    // app.use('/posts', post);
-    app.use('/users/register', users);
-    app.use('/auth/login', auth);
-    app.use('/auth/logout', logout);
+    app.use('/contact', contactRoute);
+    app.use('/', userRoute);
     app.use('/users', index);
-    app.use('/about', about);
-    app.use('/contact', contact);
-    app.use('/forgot', forgot);
-    app.use('/reset', reset);
 
     app.all('*', (req, res, next) => {
         return next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

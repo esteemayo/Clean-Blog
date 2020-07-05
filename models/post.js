@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const postSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'A post must have a title']
+        required: [true, 'A post must have a title'],
+        unique: true
     },
     description: {
         type: String,
@@ -13,6 +15,7 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A post must have a content']
     },
+    slug: String,
     image: String,
     imageId: String,
     createdAt: {
@@ -26,6 +29,11 @@ const postSchema = new mongoose.Schema({
         },
         username: String
     }
+});
+
+postSchema.pre('save', function (next) {
+    this.slug = slugify(this.title, { lower: true });
+    next();
 });
 
 const Post = mongoose.model('Post', postSchema);
