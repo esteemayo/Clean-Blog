@@ -21,7 +21,6 @@ const postRoute = require('../routes/postRoute');
 const AppError = require('../utils/appError');
 const userRoute = require('../routes/users');
 const viewRoute = require('../routes/view');
-const index = require('../routes/index');
 
 module.exports = app => {
     // Passport config
@@ -113,7 +112,6 @@ module.exports = app => {
 
     app.use('/', viewRoute);
     app.use('/', userRoute);
-    app.use('/users', index);
     app.use('/contact', contactRoute);
     app.use('/api/v1/posts', postRoute);
 
