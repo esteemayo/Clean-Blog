@@ -10,10 +10,11 @@ exports.getContactForm = (req, res) => {
 
 exports.contact = catchAsync(async (req, res, next) => {
     const smtpTransporter = nodemailer.createTransport({
-        service: '',
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-            user: '',
-            pass: ''
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
         }
     });
 
