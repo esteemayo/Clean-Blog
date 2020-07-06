@@ -19,13 +19,13 @@ module.exports = {
                         next();
                     } else {
                         req.flash('error', 'Not Authorized');
-                        res.redirect('/');
+                        res.status(401).redirect('/posts');
                     }
                 }
             });
         } else {
             req.flash('error', 'Not Authorized');
-            res.redirect('/');
+            res.status(401).redirect('/posts');
         }
     }
 }

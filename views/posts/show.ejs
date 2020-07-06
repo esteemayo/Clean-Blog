@@ -10,7 +10,7 @@
           <h1><%= post.title %></h1>
           <span class="meta"
             >Posted by
-            <a href="#"></a>
+            <a href="#"><%= post.author.username %></a>
             <%= post.createdAt.toDateString() %></span
           >
         </div>

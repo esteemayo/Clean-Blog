@@ -31,8 +31,22 @@ const postSchema = new mongoose.Schema({
     }
 });
 
+// Performance index
+postSchema.index({ slug: 1 });
+
+// Document middleware
 postSchema.pre('save', function (next) {
     this.slug = slugify(this.title, { lower: true });
+    next();
+});
+
+// Aggregation middleware
+postSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'user',
+        select: 'username'
+    });
+
     next();
 });
 

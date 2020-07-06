@@ -1,5 +1,6 @@
 const multer = require('multer');
 const cloudinary = require('cloudinary');
+
 const Post = require('../models/Post');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -18,13 +19,13 @@ const imageFilter = function (req, file, cb) {
     cb(null, true);
 }
 
+const upload = multer({ storage: storage, fileFilter: imageFilter });
+
 cloudinary.config({
     cloud_name: 'learntocodewithnode',
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
-const upload = multer({ storage: storage, fileFilter: imageFilter });
 
 exports.uploadPostImage = upload.single('image');
 

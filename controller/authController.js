@@ -4,6 +4,7 @@ const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
+const Post = require('../models/Post');
 // const sendEmail = require('../utils/sendEmail');
 
 exports.register = catchAsync(async (req, res, next) => {
@@ -100,6 +101,28 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
     req.flash('success', 'Success! Your password has been changed.');
     res.status(200).redirect('/posts');
+});
+
+exports.protect = (req, res, next) => {
+    if (req.isAuthenticated()) return next();
+    req.flash('error', 'Not Authorized');
+    return res.status(401).redirect('/auth/login');
+};
+
+exports.checkPostOwnership = catchAsync(async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        const post = await Post.findById(req.params.id);
+
+        if (post.author.id.equals(req.user.id)) {
+            next();
+        } else {
+            req.flash('error', 'Not Authorized');
+            res.status(401).redirect('/');
+        }
+    } else {
+        req.flash('error', 'Not Authorized');
+        res.status(401).redirect('/posts');
+    }
 });
 
 exports.registerForm = (req, res) => {

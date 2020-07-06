@@ -34,7 +34,7 @@
         </a>
         <p class="post-meta">
           Posted by
-          <a href="/users/"></a>
+          <a href="/users/<%= user._id %>"><%= post.author.username %></a>
           <%= post.createdAt.toDateString() %>
         </p>
       </div>

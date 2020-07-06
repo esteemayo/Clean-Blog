@@ -1,24 +1,58 @@
 const express = require('express');
+const authController = require('../controller/authController');
 const viewController = require('../controller/viewController');
 
 const router = express.Router();
 
 router.get('/about', viewController.about);
 
-router.get('/posts', viewController.getPostIndex);
+router.get(
+    '/posts',
+    authController.protect,
+    viewController.getPostIndex
+);
 
-router.get('/posts/more', viewController.getMorePosts);
+router.get(
+    '/posts/more',
+    authController.protect,
+    viewController.getMorePosts
+);
 
-router.get('/posts/new', viewController.newPost);
+router.get(
+    '/posts/new',
+    authController.protect,
+    viewController.newPost
+);
 
-router.post('/posts/store', viewController.uploadPostImage, viewController.createPost);
+router.post(
+    '/posts/store',
+    authController.protect,
+    viewController.uploadPostImage,
+    viewController.createPost
+);
 
-router.get('/posts/:slug', viewController.post);
+router.get(
+    '/posts/:slug',
+    authController.protect,
+    viewController.post
+);
 
-router.get('/posts/:slug/edit', viewController.editPost);
+router.get(
+    '/posts/:slug/edit',
+    authController.protect,
+    viewController.editPost
+);
 
-router.put('/posts/:slug', viewController.updatePost);
+router.put(
+    '/posts/:slug',
+    authController.protect,
+    viewController.updatePost
+);
 
-router.delete('/posts/:slug', viewController.deletePost);
+router.delete(
+    '/posts/:slug',
+    authController.protect,
+    viewController.deletePost
+);
 
 module.exports = router;

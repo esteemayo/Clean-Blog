@@ -1,5 +1,6 @@
 const express = require('express');
 const authControlller = require('../controller/authController');
+const userControlller = require('../controller/userController');
 
 const router = express.Router();
 
@@ -21,6 +22,17 @@ router.get('/auth/reset/:token', authControlller.resetPasswordForm);
 
 router.post('/auth/reset/:token', authControlller.resetPassword);
 
-router.post('/api/v1/users', authControlller.apiLogin);
+router.post('/api/v1/users/login', authControlller.apiLogin);
+
+router
+    .route('/api/v1/users')
+    .get(userControlller.getAllUsers)
+    .post(userControlller.createUser);
+
+router
+    .route('/api/v1/users/:id')
+    .get(userControlller.getUser)
+    .patch(userControlller.updateUser)
+    .delete(userControlller.deleteUser);
 
 module.exports = router;
