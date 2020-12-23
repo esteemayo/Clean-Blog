@@ -2,25 +2,22 @@ const hpp = require('hpp');
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
-const helmet = require('helmet');
 const xss = require('xss-clean');
 const express = require('express');
 const passport = require('passport');
 const flash = require('connect-flash');
-const bodyParser = require('body-parser');
-const compression = require('compression');
 const cookieparser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const methodeOverride = require('method-override');
 const mongoSanitize = require('express-mongo-sanitize');
 
-
 const globalErrorHandler = require('../controller/errorController');
-const contactRoute = require('../routes/contact');
-const postRoute = require('../routes/postRoute');
+const contactRouter = require('../routes/contact');
+const postRouter = require('../routes/posts');
 const AppError = require('../utils/appError');
-const userRoute = require('../routes/users');
-const viewRoute = require('../routes/view');
+const userRouter = require('../routes/users');
+const viewRouter = require('../routes/view');
+const helpers = require('../helpers');
 
 module.exports = app => {
     // Passport config
@@ -34,9 +31,6 @@ module.exports = app => {
 
     // view engine setup
     app.set('view engine', 'ejs');
-
-    // Set security http headers
-    app.use(helmet());
 
     // Development logging
     if (process.env.NODE_ENV === 'development') {
@@ -52,9 +46,9 @@ module.exports = app => {
 
     app.use('/api', limiter);
 
-    // Body parser middleware
-    app.use(bodyParser.json({ limit: '10kb' }));
-    app.use(bodyParser.urlencoded({ extended: true, limit: '10kb' }));
+    // Body parser
+    app.use(express.json({ limit: '10kb' }));
+    app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
     // Cookie parser middleware
     app.use(cookieparser());
@@ -73,9 +67,6 @@ module.exports = app => {
             'createdAt'
         ]
     }));
-
-    // Compression middleware
-    app.use(compression());
 
     // Serving static files
     app.use(express.static(path.join(`${__dirname}/../public`)));
@@ -98,9 +89,12 @@ module.exports = app => {
     app.use(flash());
 
     app.use((req, res, next) => {
+        res.locals.h = helpers;
         res.locals.user = req.user || null;
         res.locals.error = req.flash('error');
         res.locals.success = req.flash('success');
+        res.locals.info = req.flash('info');
+        res.locals.currentPath = req.path;
         next();
     });
 
@@ -110,10 +104,10 @@ module.exports = app => {
         next();
     });
 
-    app.use('/', viewRoute);
-    app.use('/', userRoute);
-    app.use('/contact', contactRoute);
-    app.use('/api/v1/posts', postRoute);
+    app.use('/', viewRouter);
+    app.use('/', userRouter);
+    app.use('/contact', contactRouter);
+    app.use('/api/v1/posts', postRouter);
 
     app.all('/', (req, res, next) => {
         if (req.originalUrl === '/') return res.redirect('/posts');
@@ -121,7 +115,7 @@ module.exports = app => {
     });
 
     app.all('*', (req, res, next) => {
-        return next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+        next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
     });
 
     app.use(globalErrorHandler);
