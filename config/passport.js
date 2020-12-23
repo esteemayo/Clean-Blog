@@ -1,27 +1,31 @@
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 module.exports = passport => {
-    passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done) => {
-        // MATCH USER
-        User.findOne({email: email})
-            .then(user => {
-                if (!user) {
-                    return done(null, false, {message: 'No User Found'});
-                }
+    passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+        // Match user
+        const user = await User.findOne({ email })
+        if (!user) {
+            return done(null, false, { message: 'Incorrect email or password' });
+        }
 
-                // MATCH PASSWORD
-                bcrypt.compare(password, user.password, (err, isMatch) => {
-                    if (err) throw err;
+        try {
+            // Validate password
+            const isValid = await user.correctPassword(password, user.password);
 
-                    if (isMatch) {
-                        return done(null, user);
-                    } else {
-                        return done(null, false, {message: 'Password Incorrect'});
-                    }
-                });
-            });
+            if (!isValid) {
+                return done(null, false, { message: 'Incorrect email or password' });
+            }
+
+            // Check if account has been verified
+            if (!user.active) {
+                return done(null, false, { message:'Your account has not been verified. Please check your email to verify your account' });
+            }
+
+            return done(null, user);
+        } catch (err) {
+            console.log(err);
+        }
     }));
 
     passport.serializeUser((user, done) => {
