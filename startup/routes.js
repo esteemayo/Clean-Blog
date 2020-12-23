@@ -11,7 +11,7 @@ const rateLimit = require('express-rate-limit');
 const methodeOverride = require('method-override');
 const mongoSanitize = require('express-mongo-sanitize');
 
-const globalErrorHandler = require('../controller/errorController');
+const globalErrorHandler = require('../controllers/errorController');
 const contactRouter = require('../routes/contact');
 const postRouter = require('../routes/posts');
 const AppError = require('../utils/appError');
