@@ -1,56 +1,55 @@
 const express = require('express');
 const authController = require('../controller/authController');
 const viewController = require('../controller/viewController');
+const imageController = require('../controller/imageController');
 
 const router = express.Router();
 
 router.get('/about', viewController.about);
 
-router.get(
-    '/posts',
+router.get('/posts',
     authController.protect,
-    viewController.getPostIndex
+    viewController.getOverview
 );
 
-router.get(
-    '/posts/more',
+router.get('/posts/more',
     authController.protect,
     viewController.getMorePosts
 );
 
-router.get(
-    '/posts/new',
+router.get('/posts/more/page/:page',
+    authController.protect,
+    viewController.getMorePosts
+);
+
+router.get('/posts/new',
     authController.protect,
     viewController.newPost
 );
 
-router.post(
-    '/posts/store',
+router.post('/posts/store',
     authController.protect,
-    viewController.uploadPostImage,
+    imageController.uploadPostImage,
     viewController.createPost
 );
 
-router.get(
-    '/posts/:slug',
+router.get('/posts/:slug',
     authController.protect,
     viewController.post
 );
 
-router.get(
-    '/posts/:slug/edit',
+router.get('/posts/:slug/edit',
     authController.protect,
     viewController.editPost
 );
 
-router.put(
-    '/posts/:slug',
+router.put('/posts/:id',
     authController.protect,
+    imageController.uploadPostImage,
     viewController.updatePost
 );
 
-router.delete(
-    '/posts/:slug',
+router.delete('/posts/:id',
     authController.protect,
     viewController.deletePost
 );

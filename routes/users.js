@@ -1,38 +1,71 @@
 const express = require('express');
-const authControlller = require('../controller/authController');
-const userControlller = require('../controller/userController');
+const authController = require('../controller/authController');
+const userController = require('../controller/userController');
 
 const router = express.Router();
 
-router.get('/users/register', authControlller.registerForm);
+router
+    .route('/users/register',)
+    .get(authController.registerForm)
+    .post(authController.register);
 
-router.post('/users/register', authControlller.register);
+router
+    .route('/users/verify-account')
+    .get(authController.verifyForm)
+    .post(authController.verify);
 
-router.get('/auth/login', authControlller.loginForm);
+router
+    .route('/auth/login')
+    .get(authController.loginForm)
+    .post(authController.login);
 
-router.post('/auth/login', authControlller.login);
+router.get('/auth/logout', authController.logout);
 
-router.get('/auth/logout', authControlller.logout);
+router
+    .route('/auth/forgot')
+    .get(authController.forgotForm)
+    .post(authController.forgot);
 
-router.get('/auth/forgot', authControlller.forgotForm);
+router
+    .route('/auth/reset/:token')
+    .get(authController.resetPasswordForm)
+    .post(authController.resetPassword);
 
-router.post('/auth/forgot', authControlller.forgot);
+router.get('/account/me',
+    authController.protect,
+    authController.account
+);
 
-router.get('/auth/reset/:token', authControlller.resetPasswordForm);
+router.post('/submit-user-data',
+    authController.protect,
+    authController.updateUserData
+);
 
-router.post('/auth/reset/:token', authControlller.resetPassword);
+router.post('/update-password',
+    authController.protect,
+    authController.confirmPassword,
+    authController.updatePassword
+);
 
-router.post('/api/v1/users/login', authControlller.apiLogin);
+router.get('/users/profile/:username',
+    authController.protect,
+    authController.profile
+);
+
+router.get('/users/profile/:username/page/:page',
+    authController.protect,
+    authController.profile
+);
 
 router
     .route('/api/v1/users')
-    .get(userControlller.getAllUsers)
-    .post(userControlller.createUser);
+    .get(userController.getAllUsers)
+    .post(userController.createUser);
 
 router
     .route('/api/v1/users/:id')
-    .get(userControlller.getUser)
-    .patch(userControlller.updateUser)
-    .delete(userControlller.deleteUser);
+    .get(userController.getUser)
+    .patch(userController.updateUser)
+    .delete(userController.deleteUser);
 
 module.exports = router;

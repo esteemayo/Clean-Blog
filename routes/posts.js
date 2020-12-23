@@ -1,5 +1,6 @@
 const express = require('express');
 const postController = require('../controller/postController');
+const imageController = require('../controller/imageController');
 
 const router = express.Router();
 
@@ -7,7 +8,7 @@ router
     .route('/')
     .get(postController.getAllPosts)
     .post(
-        postController.uploadPostImage,
+        imageController.uploadPostImage,
         postController.createPost
     );
 
@@ -15,7 +16,7 @@ router
     .route('/:id')
     .get(postController.getPost)
     .patch(
-        postController.uploadPostImage,
+        imageController.uploadPostImage,
         postController.updatePost
     )
     .delete(postController.deletePost);
