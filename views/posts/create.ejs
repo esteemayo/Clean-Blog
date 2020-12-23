@@ -17,23 +17,23 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <form action="/posts/store" method="post" enctype="multipart/form-data">
+            <form action="/posts/store" method="POST" enctype="multipart/form-data">
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" class="form-control">
+                        <input type="text" name="title" placeholder="Title" class="form-control" required>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Description</label>
-                        <input type="text" name="description" placeholder="Description" class="form-control">
+                        <input type="text" name="description" placeholder="Description" class="form-control" required>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Content</label>
-                        <textarea name="content" id="content" cols="30" rows="10" placeholder="Content..." class="form-control"></textarea>
+                        <textarea name="content" id="content" cols="30" rows="10" placeholder="Content..." class="form-control" required></textarea>
                     </div>
                 </div>
                 <div class="control-group">

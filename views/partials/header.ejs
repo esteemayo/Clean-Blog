@@ -7,9 +7,9 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="author" content="Emmanuel Adebayo" />
 
-    <title>Clean Blog | <%= title %></title>
+    <title><%= h.siteName %> | <%= title %></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -31,6 +31,17 @@
       type="text/css"
     />
 
+    <% if (currentPath.startsWith('/users/profile/') ||
+    currentPath.startsWith('/posts/more')) { %>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <% } %>
+
     <!-- Custom styles for this template -->
     <link href="/css/clean-blog.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/style.css" />
@@ -40,7 +51,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="/posts">Clean Blog</a>
+        <a class="navbar-brand" href="/">Clean Blog</a>
         <button
           class="navbar-toggler navbar-toggler-right"
           type="button"
@@ -57,23 +68,43 @@
           <ul class="navbar-nav ml-auto">
             <% if (user) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/posts">Home</a>
+              <a
+                class="nav-link <%= currentPath.endsWith('/posts') ? 'active' : '' %>"
+                href="/posts"
+                >Home</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posts/new">New Post</a>
+              <a
+                class="nav-link <%= currentPath.startsWith('/posts/new') ? 'active' : '' %>"
+                href="/posts/new"
+                >Create Post</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Welcome <%= user.username %> </a>
+              <a
+                class="nav-link <%= currentPath.startsWith('/account/me') ? 'active' : '' %>"
+                href="/account/me"
+                ><%= user.name %>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/auth/logout">Logout</a>
             </li>
             <% } else { %>
             <li class="nav-item">
-              <a class="nav-link" href="/users/register">Register</a>
+              <a
+                class="nav-link <%= currentPath.startsWith('/users/register') ? 'active' : '' %>"
+                href="/users/register"
+                >Register</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/auth/login">Login</a>
+              <a
+                class="nav-link <%= currentPath.startsWith('/auth/login') ? 'active' : '' %>"
+                href="/auth/login"
+                >Login</a
+              >
             </li>
             <% } %>
           </ul>
@@ -105,6 +136,18 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <%= success %>
+      </div>
+      <% } %> <% if (info && info.length) { %>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <%= info %>
       </div>
       <% } %>
     </div>

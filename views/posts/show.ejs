@@ -11,7 +11,8 @@
           <span class="meta"
             >Posted by
             <a href="#"><%= post.author.username %></a>
-            <%= post.createdAt.toDateString() %></span
+            <time datetime="<%= post.createdAt %>"><%= post.createdAt.toDateString() %></time>
+          </span
           >
         </div>
       </div>
@@ -28,13 +29,13 @@
       </div>
     </div>
     <div class="custom-btn">
-      <% if (user && post.author.id.equals(user._id)) { %>
+      <% if (user && post.author.id.equals(user._id) || user && user.role === 'admin') { %>
       <a class="btn btn-primary" href="/posts/<%= post.slug %>/edit"
         >Edit &rarr;</a
       >
       <form
         id="btn-del"
-        action="/posts/<%= post.slug %>?_method=DELETE"
+        action="/posts/<%= post._id %>?_method=DELETE"
         method="post"
       >
         <button class="btn btn-danger">Delete &rarr;</button>

@@ -1,13 +1,13 @@
 <% include ../partials/header %>
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('img/more-bg.jpg');">
+<header class="masthead" style="background-image: url('/img/more-bg.jpg')">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="site-heading">
-          <h1>Esteem Blog</h1>
+          <h1><%= h.siteName %></h1>
           <span class="subheading">A Blog Theme by Esteem Designs</span>
         </div>
       </div>
@@ -22,24 +22,48 @@
       <% posts.forEach(post => { %>
       <div class="post-preview">
         <a href="/posts/<%= post.slug %>">
-          <h2 class="post-title">
-            <%= post.title %>
-          </h2>
-          <h3 class="post-subtitle">
+          <h2 class="post-title"><%= post.title %></h2>
+          <h3 class="post-subtitle post-content">
             <%= post.content.substring(100, 0) %>...
           </h3>
-          <h6 class="post-subtitle">
+          <h6 class="post-subtitle post-description">
             <span><em><%= post.description %></em></span>
           </h6>
         </a>
         <p class="post-meta">
           Posted by
-          <a href="/users/"></a>
-          <%= post.createdAt.toDateString() %>
+          <a href="/users/profile/<%= post.author.username %>"
+            ><%= post.author.username %></a
+          >
+          <time datetime="<%= post.createdAt %>"
+            ><%= post.createdAt.toDateString() %></time
+          >
         </p>
       </div>
       <hr />
       <% }); %>
+
+      <nav aria-label="">
+        <ul class="pager">
+          <% if (page > 1) { %>
+          <li class="previous">
+            <a href="/posts/more/page/<%= page - 1 %>"
+              ><span aria-hidden="true">&larr;</span> Prev</a
+            >
+          </li>
+          <% } %>
+          <li>
+            <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
+          </li>
+          <% if (page < pages) { %>
+          <li class="next">
+            <a href="/posts/more/page/<%= parseFloat(page + 1) %>"
+              >Next <span aria-hidden="true">&rarr;</span></a
+            >
+          </li>
+          <% } %>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

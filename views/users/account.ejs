@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="page-heading">
-          <h1>Create A New Account</h1>
+          <h1>Your Account Settings</h1>
         </div>
       </div>
     </div>
@@ -16,17 +16,42 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <form action="/users/register" method="POST">
+    <div class="col-md-4">
+      <h2 class="heading-secondary">Profile Details</h2>
+      <div>
+        <a href="<%= user.gravatar %>" target="_blank" class="thumbnail">
+          <img
+            src="<%= user.gravatar %>"
+            alt="<%= user.name %>"
+            title="<%= user.name %>"
+            width="300"
+          />
+        </a>
+      </div>
+      &nbsp;
+      <div class="user-details">
+        <h6>Name: <%= user.name %></h6>
+        <h6>Username: <%= user.username %></h6>
+        <h6>
+          Email Address:
+          <a href="mailto:<%= user.email %>"><%= user.email %></a>
+        </h6>
+        <% const date = user.createdAt.toLocaleString('en-us', { month: 'long',
+        year: 'numeric' }) %>
+        <h6>Joined: <time datetime="<%= date %>"><%= date %></time></h6>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h2 class="heading-secondary">Your Account Settings</h2>
+      <form action="/submit-user-data" method="POST">
         <div class="control-group">
           <div class="form-group floating-label-form-group controls">
             <label>Username</label>
             <input
               type="text"
               name="username"
-              placeholder="Username"
+              value="<%= user.username %>"
               class="form-control"
-              autofocus
             />
           </div>
         </div>
@@ -36,7 +61,7 @@
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              value="<%= user.name %>"
               class="form-control"
             />
           </div>
@@ -47,7 +72,28 @@
             <input
               type="text"
               name="email"
-              placeholder="user@example.com"
+              value="<%= user.email %>"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="form-group my-4 text-center">
+          <button class="btn btn-primary">Save settings &rarr;</button>
+        </div>
+      </form>
+    </div>
+    <br />
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+      <h2 class="heading-secondary">Password Change</h2>
+      <form action="/update-password" method="POST">
+        <div class="control-group">
+          <div class="form-group floating-label-form-group controls">
+            <label>Current Password</label>
+            <input
+              type="password"
+              name="passwordCurrent"
+              placeholder="********"
               class="form-control"
             />
           </div>
@@ -65,7 +111,7 @@
         </div>
         <div class="control-group">
           <div class="form-group floating-label-form-group controls">
-            <label>Confirm password</label>
+            <label>Confirm Password</label>
             <input
               type="password"
               name="passwordConfirm"
@@ -75,7 +121,7 @@
           </div>
         </div>
         <div class="form-group my-4 text-center">
-          <button class="btn btn-primary">Register Now &rarr;</button>
+          <button class="btn btn-primary">Save settings &rarr;</button>
         </div>
       </form>
     </div>

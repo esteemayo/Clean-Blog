@@ -1,0 +1,99 @@
+<% include ../partials/header %>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1><%= userProfile.name.toUpperCase() %>'s Profile</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h2 class="heading-secondary">Profile</h2>
+      <div>
+        <a href="<%= userProfile.gravatar %>" target="_blank" class="thumbnail">
+          <img
+            src="<%= userProfile.gravatar %>"
+            alt="<%= userProfile.name %>"
+            title="<%= userProfile.name %>"
+            width="300"
+          />
+        </a>
+      </div>
+      <br />
+      <div class="user-details heading">
+        <h6>Name: <%= userProfile.name %></h6>
+        <h6>Username: <%= userProfile.username %></h6>
+        <h6>
+          Email Address:
+          <a href="mailto:<%= userProfile.email %>"><%= userProfile.email %></a>
+        </h6>
+        <h6>Posts: <span class="badge"><%= count %></span></h6>
+        <% const date = userProfile.createdAt.toLocaleString('en-us', { month:
+        'long', year: 'numeric' }) %>
+        <h6>Joined: <time datetime="<%= date %>"><%= date %></time></h6>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h2 class="heading-secondary">
+        All Posts by <span><small><%= userProfile.username %></small></span>
+      </h2>
+      <% posts.forEach(post => { %>
+      <div class="post-preview">
+        <a href="/posts/<%= post.slug %>">
+          <h2 class="post-title"><%= post.title %></h2>
+          <h3 class="post-subtitle">
+            <%= post.content.split(' ').slice(0, 25).join(' ') %>...
+          </h3>
+          <h6 class="post-subtitle post-description">
+            <span><em><%= post.description %></em></span>
+          </h6>
+        </a>
+        <p class="post-meta">
+          Posted by
+          <a href="/users/profile/<%= post.author.username %>"
+            ><%= post.author.username %></a
+          >
+          <time datetime="<%= post.createdAt %>"
+            ><%= h.moment(post.createdAt).fromNow() %></time
+          >
+        </p>
+      </div>
+      <% }); %>
+
+      <nav aria-label="...">
+        <ul class="pager">
+          <% if (page > 1) { %>
+          <li class="previous">
+            <a
+              href="/users/profile/<%= userProfile.username %>/page/<%= page - 1 %>"
+              ><span aria-hidden="true">&larr;</span> Prev</a
+            >
+          </li>
+          <% } %>
+          <li>
+            <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
+          </li>
+          <% if (page < pages) { %>
+          <li class="next">
+            <a
+              href="/users/profile/<%= userProfile.username %>/page/<%= parseFloat(page + 1) %>"
+              >Next <span aria-hidden="true">&rarr;</span></a
+            >
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>
