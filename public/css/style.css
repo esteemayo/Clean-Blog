@@ -79,17 +79,18 @@
 }
 
 .heading-secondary {
-  font-size: 2.25rem;
+  font-size: 2rem;
   text-transform: uppercase;
+  margin-top: 3rem;
   font-weight: 700;
   background-image: -webkit-gradient(
     linear,
     left top,
     right top,
-    from(#7dd56f),
-    to(#28b487)
+    from(#48ded4),
+    to(#0085a1)
   );
-  background-image: linear-gradient(to right, #7dd56f, #28b487);
+  background-image: linear-gradient(to right, #48ded4, #0085a1);
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: 0.1rem;
@@ -108,3 +109,127 @@
   background-image: linear-gradient(to right, #ff7730, #eb4d4b);
   font-size: 3.5rem;
 }
+
+.profile-img {
+  border-radius: 50%;
+}
+
+.user-details h6 {
+  text-align: justify;
+  font-weight: normal;
+}
+
+.post-content {
+  font-size: 30px;
+}
+
+.post-description {
+  font-size: 16px;
+}
+
+@media only screen and (min-width: 768px) {
+  header.masthead .post-heading h1 {
+    font-size: 55px;
+  }
+  header.masthead .post-heading .subheading {
+    font-size: 30px;
+  }
+}
+.post-preview > a {
+  color: #212529;
+}
+.post-preview > a:focus,
+.post-preview > a:hover {
+  text-decoration: none;
+  color: #0085a1;
+}
+.post-preview > a > .post-title {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+.post-preview > a > .post-subtitle {
+  font-weight: 300;
+  margin: 0 0 10px;
+}
+.post-preview > .post-meta {
+  font-size: 18px;
+  font-style: italic;
+  margin-top: 0;
+  color: #868e96;
+}
+.post-preview > .post-meta > a {
+  text-decoration: none;
+  color: #212529;
+}
+.post-preview > .post-meta > a:focus,
+.post-preview > .post-meta > a:hover {
+  text-decoration: underline;
+  color: #0085a1;
+}
+@media only screen and (min-width: 768px) {
+  .post-preview > a > .post-title {
+    font-size: 36px;
+  }
+}
+
+.alert {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-image: initial;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: rgb(60, 118, 61);
+  background-color: rgb(223, 240, 216);
+  border-color: rgb(214, 233, 198);
+}
+
+.alert-error {
+  color: rgb(169, 68, 66);
+  background-color: rgb(242, 222, 222);
+  border-color: rgb(235, 204, 209);
+}
+
+.alert-info {
+  color: rgb(49, 112, 143);
+  background-color: rgb(217, 237, 247);
+  border-color: rgb(188, 232, 241);
+}
+
+.alert-warning {
+  color: rgb(138, 109, 59);
+  background-color: rgb(252, 248, 227);
+  border-color: rgb(250, 235, 204);
+}
+
+.heading h6 {
+  font-size: 1.5rem;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.active {
+  border-bottom: 2px solid #fff;
+}
+
+/* .badge {
+  display: inline-block;
+  min-width: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: rgb(119, 119, 119);
+  padding: 3px 7px;
+  border-radius: 10px;
+} */
