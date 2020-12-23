@@ -5,7 +5,8 @@ const postSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'A post must have a title'],
-        unique: true
+        maxlength: [40, 'A campground name must have less or equal than 40 characters'],
+        minlength: [10, 'A campground name must have more or equal than 10 characters']
     },
     description: {
         type: String,
@@ -18,29 +19,40 @@ const postSchema = new mongoose.Schema({
     slug: String,
     image: String,
     imageId: String,
-    createdAt: {
-        type: Date,
-        default: new Date
-    },
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            required: [true, 'A post must belong to an author']
         },
         username: String
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
 });
 
 // Performance index
-postSchema.index({ slug: 1 });
+postSchema.index({ title: 1, slug: 1 });
 
 // Document middleware
-postSchema.pre('save', function (next) {
+postSchema.pre('save', async function (next) {
+    if (!this.isModified('title')) return next();
+
     this.slug = slugify(this.title, { lower: true });
+
+    const slugRegExp = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+    const postWithSlug = await this.constructor.find({ slug: slugRegExp });
+
+    if (postWithSlug.length) {
+        this.slug = `${this.slug}-${postWithSlug.length + 1}`;
+    }
+
     next();
 });
 
-// Aggregation middleware
+// Document middleware
 postSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'user',
