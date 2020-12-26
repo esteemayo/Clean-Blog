@@ -11,7 +11,7 @@
           <span class="meta"
             >Posted by
             <a href="#"><%= post.author.username %></a>
-            <time datetime="<%= post.createdAt %>"><%= post.createdAt.toDateString() %></time>
+            <time datetime="<%= post.createdAt %>"><%= h.moment(post.createdAt).fromNow(true) %></time>
           </span
           >
         </div>
