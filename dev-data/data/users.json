@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "5fdfcf6470f18f54140fec5c",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2020-12-20T22:19:58.497Z",
+    "username": "esteemayo",
+    "name": "Emmanuel Adebayo",
+    "email": "esteemdesign19@gmail.com",
+    "password": "$2a$12$SzKukjedRpYil59xyFLfkOmHWdXtaZW0k5eqxut8BUcV.mcj1nVIq"
+  },
+  {
+    "_id": "5d51abe3fd587e31f8a1571f",
+    "role": "user",
+    "active": true,
+    "createdAt": "2019-08-12T18:09:38.198Z",
+    "username": "johnny",
+    "name": "John Doe",
+    "email": "jdoe@example.com",
+    "password": "$2a$12$1Zu26z7F.pA/a.nMMVckX.SOiUAkjl4fD5jkvQPE1biCZgxfGNBcK"
+  },
+  {
+    "_id": "5da3afdf3a5e203614d343ff",
+    "role": "user",
+    "active": true,
+    "createdAt": "2019-09-11T17:09:38.198Z",
+    "username": "mdoe",
+    "name": "Mary Doe",
+    "email": "mdoe@example.com",
+    "password": "$2a$12$wMofeOi93bQNdood28OlBOlD.9BpCmeV5oDFVeWLn5RD7eisEv5Ja"
+  },
+  {
+    "_id": "5f0129dd51a2da3da43c478a",
+    "role": "user",
+    "active": true,
+    "createdAt": "2019-10-15T17:07:00.198Z",
+    "username": "scotty",
+    "name": "Scott Rice",
+    "email": "scott@example.com",
+    "password": "$2a$12$.EU8LcT9wrt9rmFF6r5V8egSdi.suk5xluJ3ekGo7.syS2QuT22L2"
+  },
+  {
+    "_id": "5fdeb1c5ca89435a20f1e2a1",
+    "role": "user",
+    "active": true,
+    "createdAt": "2020-12-20T02:06:28.531Z",
+    "username": "loulou",
+    "name": "Loulou Sophie",
+    "email": "loulou@example.com",
+    "password": "$2a$12$nWw9CUsBpmzYNKnZuquH6OqgZmxaJ5P/CT4sjU/L4OdgnBH1ivLjq"
+  },
+  {
+    "_id": "5fdebbd4774f1c4298bff9a4",
+    "role": "user",
+    "active": true,
+    "createdAt": "2020-12-20T02:49:06.561Z",
+    "username": "joe",
+    "name": "Joe Kennedy",
+    "email": "joe@example.com",
+    "password": "$2a$12$qSPWxRZ46taoZ2seafO0.Oh342F2hoSxQog90UbEO0kUoVi6VRqf2"
+  },
+  {
+    "_id": "5fe155686864eb68fc204535",
+    "role": "user",
+    "active": true,
+    "createdAt": "2020-12-22T02:07:37.490Z",
+    "username": "chris",
+    "name": "Chris Vega",
+    "email": "chris@example.com",
+    "password": "$2a$12$KM5xsFtY.nbKBHmXfMPPQOtz3FBBaY2ug93KDLej4OsNLhu2wBWY."
+  },
+  {
+    "_id": "5fe22cc63f770b467cb9dd9e",
+    "role": "user",
+    "active": true,
+    "createdAt": "2020-12-22T17:28:08.633Z",
+    "username": "jonez",
+    "name": "Jones Simpson",
+    "email": "jones@example.com",
+    "password": "$2a$12$xZZAyoAZmLHEI05xVFdL/u7Td1jTmYisYzi/sdAM5VJNoKbFIA78."
+  },
+  {
+    "_id": "5fe2a8fe32399c3a7406844c",
+    "role": "user",
+    "active": true,
+    "createdAt": "2020-12-23T02:17:07.547Z",
+    "username": "alexis",
+    "name": "Alexander Gomez",
+    "email": "alexander@example.com",
+    "password": "$2a$12$ebe0js.sqc.HytjdQ4/wPeR4kpOK1QzV1yPpA6WHRZ8vEdrnG/LZK"
+  }
+]
