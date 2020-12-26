@@ -43,27 +43,29 @@
       <hr />
       <% }); %>
 
-      <nav aria-label="">
-        <ul class="pager">
-          <% if (page > 1) { %>
-          <li class="previous">
-            <a href="/posts/more/page/<%= page - 1 %>"
-              ><span aria-hidden="true">&larr;</span> Prev</a
-            >
-          </li>
-          <% } %>
-          <li>
-            <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
-          </li>
-          <% if (page < pages) { %>
-          <li class="next">
-            <a href="/posts/more/page/<%= parseFloat(page + 1) %>"
-              >Next <span aria-hidden="true">&rarr;</span></a
-            >
-          </li>
-          <% } %>
-        </ul>
-      </nav>
+      <% if (posts.length > 0) { %>
+        <nav aria-label="">
+          <ul class="pager">
+            <% if (page > 1) { %>
+            <li class="previous">
+              <a href="/posts/more/page/<%= page - 1 %>"
+                ><span aria-hidden="true">&larr;</span> Prev</a
+              >
+            </li>
+            <% } %>
+            <li>
+              <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
+            </li>
+            <% if (page < pages) { %>
+            <li class="next">
+              <a href="/posts/more/page/<%= parseFloat(page + 1) %>"
+                >Next <span aria-hidden="true">&rarr;</span></a
+              >
+            </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } %>
     </div>
   </div>
 </div>
