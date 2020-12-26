@@ -36,10 +36,10 @@
           Email Address:
           <a href="mailto:<%= userProfile.email %>"><%= userProfile.email %></a>
         </h6>
-        <h6>Posts: <span class="badge"><%= count %></span></h6>
         <% const date = userProfile.createdAt.toLocaleString('en-us', { month:
         'long', year: 'numeric' }) %>
         <h6>Joined: <time datetime="<%= date %>"><%= date %></time></h6>
+        <h6>Posts: <span class="badge"><%= count %></span></h6>
       </div>
     </div>
     <div class="col-md-8">
@@ -69,29 +69,31 @@
       </div>
       <% }); %>
 
-      <nav aria-label="...">
-        <ul class="pager">
-          <% if (page > 1) { %>
-          <li class="previous">
-            <a
-              href="/users/profile/<%= userProfile.username %>/page/<%= page - 1 %>"
-              ><span aria-hidden="true">&larr;</span> Prev</a
-            >
-          </li>
-          <% } %>
-          <li>
-            <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
-          </li>
-          <% if (page < pages) { %>
-          <li class="next">
-            <a
-              href="/users/profile/<%= userProfile.username %>/page/<%= parseFloat(page + 1) %>"
-              >Next <span aria-hidden="true">&rarr;</span></a
-            >
-          </li>
-          <% } %>
-        </ul>
-      </nav>
+      <% if (posts.length > 0) { %>
+        <nav aria-label="...">
+          <ul class="pager">
+            <% if (page > 1) { %>
+            <li class="previous">
+              <a
+                href="/users/profile/<%= userProfile.username %>/page/<%= page - 1 %>"
+                ><span aria-hidden="true">&larr;</span> Prev</a
+              >
+            </li>
+            <% } %>
+            <li>
+              <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
+            </li>
+            <% if (page < pages) { %>
+            <li class="next">
+              <a
+                href="/users/profile/<%= userProfile.username %>/page/<%= parseFloat(page + 1) %>"
+                >Next <span aria-hidden="true">&rarr;</span></a
+              >
+            </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } %>
     </div>
   </div>
 </div>
