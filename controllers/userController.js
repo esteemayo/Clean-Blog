@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const factory = require('../controller/handlerFactory');
+const factory = require('../controllers/handlerFactory');
 
 exports.createUser = (req, res, next) => {
     res.status(500).json({

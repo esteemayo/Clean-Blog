@@ -2,7 +2,7 @@ const cloudinary = require('cloudinary');
 const Post = require('../models/Post');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const factory = require('../controller/handlerFactory');
+const factory = require('../controllers/handlerFactory');
 
 cloudinary.config({
     cloud_name: 'learntocodewithnode',
