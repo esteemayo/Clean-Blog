@@ -44,27 +44,21 @@
       <% }); %>
 
       <% if (posts.length > 0) { %>
-        <nav aria-label="">
-          <ul class="pager">
+        <div class="pagination">
+          <div class="pagination__prev">
             <% if (page > 1) { %>
-            <li class="previous">
-              <a href="/posts/more/page/<%= page - 1 %>"
-                ><span aria-hidden="true">&larr;</span> Prev</a
-              >
-            </li>
+              <a href="/posts/more/page/<%= page - 1 %>">Prev</a>
             <% } %>
-            <li>
-              <a>Page <%= page %> of <%= pages %> - <%= count %> total results</a>
-            </li>
+          </div>
+          <div class="pagination__text">
+            <p>Page <%= page %> of <%= pages %> - <%= count %> total results</p>
+          </div>
+          <div class="pagination__next">
             <% if (page < pages) { %>
-            <li class="next">
-              <a href="/posts/more/page/<%= parseFloat(page + 1) %>"
-                >Next <span aria-hidden="true">&rarr;</span></a
-              >
-            </li>
+              <a href="/posts/more/page/<%= parseFloat(page + 1) %>">Next</a>
             <% } %>
-          </ul>
-        </nav>
+          </div>
+        </div>
       <% } %>
     </div>
   </div>
